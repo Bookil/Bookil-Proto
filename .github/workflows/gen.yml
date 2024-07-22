@@ -22,4 +22,4 @@ jobs:
         shell: bash
         run: |
           chmod +x "${GITHUB_WORKSPACE}/gen.sh"
-          ./run.sh ${{ matrix.service }} ${{ env.RELEASE_VERSION }}
+          ./gen.sh ${{ matrix.service }} ${{ env.RELEASE_VERSION }}
