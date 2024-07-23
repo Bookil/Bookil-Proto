@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package shipping.v1;
+
+option go_package = "github.com/Bookil/microservices/shipping";
+
+message CreateRequest {}
+
+message CreateResponse {}
+
+service ShippingService{
+    rpc Create(CreateRequest)returns(CreateResponse){}
+}

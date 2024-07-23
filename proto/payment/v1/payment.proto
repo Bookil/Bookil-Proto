@@ -1,15 +1,17 @@
 syntax = "proto3";
 
+package payment.v1;
+
 option go_package = "github.com/Bookil/microservices/payment";
 
-message CreatePaymentRequest {
+message CreateRequest {
     int64 user_id = 1;
     int64 order_id = 2; 
     float total_price = 3;
 }
 
-message CreatePaymentResponse {}
+message CreateResponse {}
 
-service Payment{
-    rpc Create(CreatePaymentRequest)returns(CreatePaymentResponse){}
+service PaymentService{
+    rpc Create(CreateRequest)returns(CreateResponse){}
 }

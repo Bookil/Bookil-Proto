@@ -1,8 +1,10 @@
 syntax = "proto3";
 
+package order.v1;
+
 option go_package = "github.com/Bookil/microservices/order";
 
-message CreateOrderRequest {
+message CreateRequest {
     int64 user_id = 1;
     repeated Item items = 2; 
     float total_price = 3;
@@ -14,10 +16,10 @@ message Item {
     int64 quantity = 3;
 }
 
-message CreateOrderResponse {
+message CreateResponse {
     int64 order_id = 1;
 }
 
-service Order{
-    rpc Create(CreateOrderRequest)returns(CreateOrderResponse){}
+service OrderService{
+    rpc Create(CreateRequest)returns(CreateResponse){}
 }
