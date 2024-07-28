@@ -4,68 +4,60 @@ package order.v1;
 
 option go_package = "github.com/Bookil/microservices/order";
 
-service OrderService{
-    rpc Create(CreateRequest)returns(CreateResponse){}
-    rpc Get(GetRequest)returns(GetResponse){}
-    rpc Update(UpdateRequest)returns(UpdateResponse){}
-    rpc Delete(DeleteRequest)returns(DeleteResponse){}
-
+service OrderService {
+  rpc Create(CreateRequest) returns (CreateResponse) {}
+  rpc Get(GetRequest) returns (GetResponse) {}
+  rpc Update(UpdateRequest) returns (UpdateResponse) {}
+  rpc Delete(DeleteRequest) returns (DeleteResponse) {}
 }
 
 message CreateRequest {
-    string customer_id = 1;
-    repeated Item items = 2; 
+  string customer_id = 1;
+  repeated Item items = 2;
 }
 
 message CreateResponse {
-    Order order = 1;
+  Order order = 1;
 }
 
 message GetRequest {
-    string order_id = 1;
+  string order_id = 1;
 }
 
 message GetResponse {
-    Order order = 1;
+  Order order = 1;
 }
 
 message UpdateRequest {
-    string order_id = 1;
-    repeated Item items = 3;
+  string order_id = 1;
+  repeated Item items = 3;
 }
 
 message UpdateResponse {
-    Order order = 1;
+  Order order = 1;
 }
 
 message DeleteRequest {
-    string order_id = 1;
+  string order_id = 1;
 }
 
 message DeleteResponse {
-    bool status = 1;
+  bool status = 1;
 }
 
-
 message Item {
-    string item_id =1;
-    string name =2;
-    string product_code = 3;
-    float unit_price = 4;
-    int32 quantity = 5;
+  string item_id = 1;
+  string name = 2;
+  string product_code = 3;
+  float unit_price = 4;
+  uint32 quantity = 5;
 }
 
 message Order {
-    string order_id = 1;
-    string customer_id = 2;
-    repeated Item items = 3;
-    Status status = 4;
-    float total_price = 7;
-    int64 created_at = 8;
+  string order_id = 1;
+  string customer_id = 2;
+  repeated Item items = 3;
+  uint32 status = 4;
+  float total_price = 7;
+  int64 created_at = 8;
 }
-enum Status {
-    STATUS_PENDING_UNSPECIFIED = 0;
-    STATUS_PROCESSING  = 1;
-    STATUS_SHIPPED = 2;
-}
-

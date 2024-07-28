@@ -1,4 +1,6 @@
-gen_protobuf:
+gen:
 	/usr/local/bin/buf generate 
-buf_linter:
+lint:
 	/usr/local/bin/buf lint
+fmt:
+	/usr/local/bin/buf format -w 

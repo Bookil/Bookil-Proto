@@ -4,22 +4,22 @@ package payment.v1;
 
 option go_package = "github.com/Bookil/microservices/payment";
 
-service PaymentService{
-    rpc Create(CreateRequest)returns(CreateResponse){}
+service PaymentService {
+  rpc Create(CreateRequest) returns (CreateResponse) {}
 }
 
 message CreateRequest {
-    string customer_id = 1;
-    string order_id = 2; 
-    float total_price = 3;
+  string customer_id = 1;
+  string order_id = 2;
+  float total_price = 3;
 }
 
 message CreateResponse {
-    Payment payment = 1;
+  Payment payment = 1;
 }
 
-message Payment{
-    string payment_id = 1;
-    bool status = 2;
-    int64 created_at = 3;
+message Payment {
+  string payment_id = 1;
+  bool status = 2;
+  int64 created_at = 3;
 }

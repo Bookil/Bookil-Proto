@@ -4,21 +4,21 @@ package shipping.v1;
 
 option go_package = "github.com/Bookil/microservices/shipping";
 
-service ShippingService{
-    rpc Create(CreateRequest)returns(CreateResponse){}
+service ShippingService {
+  rpc Create(CreateRequest) returns (CreateResponse) {}
 }
 
 message CreateRequest {
-    string order_id = 1;
-    string customer_id = 2;
+  string order_id = 1;
+  string customer_id = 2;
 }
 
 message CreateResponse {
-    Shipping shpping = 1;
+  Shipping shpping = 1;
 }
 
 message Shipping {
-    string shipping_id = 1;
-    bool status = 2;
-    int64 created_at = 3;
+  string shipping_id = 1;
+  bool status = 2;
+  int64 created_at = 3;
 }
