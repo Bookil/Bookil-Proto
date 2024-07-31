@@ -1,6 +1,6 @@
 gen_proto:
-	/usr/local/bin/buf generate 
+	buf generate 
 lint_proto:
-	/usr/local/bin/buf lint
+	buf lint
 fmt_proto:
-	/usr/local/bin/buf format -w 
+	buf format -w 
