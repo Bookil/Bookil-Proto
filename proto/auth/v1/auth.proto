@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package auth.v1;
+
+import "google/protobuf/duration.proto";
+
+option go_package = "github.com/Bookil/microservices/order";
+
+service AuthService {
+  rpc Register(RegisterRequest) returns (RegisterResponse) {}
+  rpc Authentication(AuthenticationRequest) returns (AuthenticationResponse) {}
+  rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse) {}
+  rpc Login(LoginRequest) returns (LoginResponse) {}
+  rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse) {}
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {}
+  rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {}
+  rpc SubmitResetPassword(SubmitResetPasswordRequest) returns (SubmitResetPasswordResponse) {}
+  rpc DeleteAccount(DeleteAccountRequest) returns (DeleteAccountResponse) {}
+}
+
+message RegisterRequest {
+  string user_id = 1;
+  string email = 2;
+  string password = 3;
+  string verify_email_redirect_url = 4;
+}
+
+message RegisterResponse {
+  string verify_email_token = 1;
+}
+
+message AuthenticationRequest {
+  string access_token = 1;
+}
+
+message AuthenticationResponse {
+  string user_id = 1;
+}
+
+message VerifyEmailRequest {
+  string verify_email_token = 1;
+}
+
+message VerifyEmailResponse {}
+
+message LoginRequest {
+  string user_id = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+}
+
+message ChangePasswordRequest {
+  string user_id = 1;
+  string new_password = 2;
+  string old_password = 3;
+}
+
+message ChangePasswordResponse {}
+
+message RefreshTokenRequest {
+  string user_id = 1;
+  string refresh_token = 2;
+}
+
+message RefreshTokenResponse {
+  string access_token = 1;
+}
+
+message ResetPasswordRequest {
+  string user_id = 1;
+}
+
+message ResetPasswordResponse {
+  string reset_password_token = 1;
+  google.protobuf.Duration timeout = 2;
+}
+message SubmitResetPasswordRequest {
+  string reset_password_token = 1;
+  string new_password = 2;
+}
+
+message SubmitResetPasswordResponse {}
+
+message DeleteAccountRequest {
+  string user_id = 1;
+  string password = 2;
+}
+
+message DeleteAccountResponse {}
