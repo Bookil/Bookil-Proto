@@ -20,14 +20,10 @@ service AuthService {
 
 message RegisterRequest {
   string user_id = 1;
-  string email = 2;
   string password = 3;
-  string verify_email_redirect_url = 4;
 }
 
-message RegisterResponse {
-  string verify_email_token = 1;
-}
+message RegisterResponse {}
 
 message AuthenticationRequest {
   string access_token = 1;
@@ -38,7 +34,7 @@ message AuthenticationResponse {
 }
 
 message VerifyEmailRequest {
-  string verify_email_token = 1;
+  string code = 1;
 }
 
 message VerifyEmailResponse {}
@@ -78,6 +74,7 @@ message ResetPasswordResponse {
   string reset_password_token = 1;
   google.protobuf.Duration timeout = 2;
 }
+
 message SubmitResetPasswordRequest {
   string reset_password_token = 1;
   string new_password = 2;
