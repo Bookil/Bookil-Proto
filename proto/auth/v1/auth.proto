@@ -34,7 +34,7 @@ message AuthenticationResponse {
 }
 
 message VerifyEmailRequest {
-  string code = 1;
+  string verification_code = 1;
 }
 
 message VerifyEmailResponse {}
