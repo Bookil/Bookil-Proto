@@ -23,7 +23,9 @@ message RegisterRequest {
   string password = 3;
 }
 
-message RegisterResponse {}
+message RegisterResponse {
+  string verification_code = 1;
+}
 
 message AuthenticationRequest {
   string access_token = 1;
