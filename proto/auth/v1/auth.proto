@@ -36,7 +36,8 @@ message AuthenticationResponse {
 }
 
 message VerifyEmailRequest {
-  string verification_code = 1;
+  string user_id = 1;
+  string verification_code = 2;
 }
 
 message VerifyEmailResponse {}
