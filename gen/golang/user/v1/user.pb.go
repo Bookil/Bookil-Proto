@@ -866,7 +866,7 @@ var file_user_v1_user_proto_rawDesc = []byte{
 	0x73, 0x77, 0x6f, 0x72, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x70, 0x61, 0x73,
 	0x73, 0x77, 0x6f, 0x72, 0x64, 0x22, 0x17, 0x0a, 0x15, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x41,
 	0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x32, 0xf0,
-	0x04, 0x0a, 0x0b, 0x41, 0x75, 0x74, 0x68, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x41,
+	0x04, 0x0a, 0x0b, 0x55, 0x73, 0x65, 0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x41,
 	0x0a, 0x08, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x12, 0x18, 0x2e, 0x75, 0x73, 0x65,
 	0x72, 0x2e, 0x76, 0x31, 0x2e, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x52, 0x65, 0x71,
 	0x75, 0x65, 0x73, 0x74, 0x1a, 0x19, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x76, 0x31, 0x2e, 0x52,
@@ -949,22 +949,22 @@ var file_user_v1_user_proto_goTypes = []any{
 	(*DeleteAccountResponse)(nil),       // 15: user.v1.DeleteAccountResponse
 }
 var file_user_v1_user_proto_depIdxs = []int32{
-	0,  // 0: user.v1.AuthService.Register:input_type -> user.v1.RegisterRequest
-	2,  // 1: user.v1.AuthService.VerifyEmail:input_type -> user.v1.VerifyEmailRequest
-	4,  // 2: user.v1.AuthService.Login:input_type -> user.v1.LoginRequest
-	6,  // 3: user.v1.AuthService.ChangePassword:input_type -> user.v1.ChangePasswordRequest
-	8,  // 4: user.v1.AuthService.ResetPassword:input_type -> user.v1.ResetPasswordRequest
-	10, // 5: user.v1.AuthService.SubmitResetPassword:input_type -> user.v1.SubmitResetPasswordRequest
-	12, // 6: user.v1.AuthService.Update:input_type -> user.v1.UpdateRequest
-	14, // 7: user.v1.AuthService.DeleteAccount:input_type -> user.v1.DeleteAccountRequest
-	1,  // 8: user.v1.AuthService.Register:output_type -> user.v1.RegisterResponse
-	3,  // 9: user.v1.AuthService.VerifyEmail:output_type -> user.v1.VerifyEmailResponse
-	5,  // 10: user.v1.AuthService.Login:output_type -> user.v1.LoginResponse
-	7,  // 11: user.v1.AuthService.ChangePassword:output_type -> user.v1.ChangePasswordResponse
-	9,  // 12: user.v1.AuthService.ResetPassword:output_type -> user.v1.ResetPasswordResponse
-	11, // 13: user.v1.AuthService.SubmitResetPassword:output_type -> user.v1.SubmitResetPasswordResponse
-	13, // 14: user.v1.AuthService.Update:output_type -> user.v1.UpdateResponse
-	15, // 15: user.v1.AuthService.DeleteAccount:output_type -> user.v1.DeleteAccountResponse
+	0,  // 0: user.v1.UserService.Register:input_type -> user.v1.RegisterRequest
+	2,  // 1: user.v1.UserService.VerifyEmail:input_type -> user.v1.VerifyEmailRequest
+	4,  // 2: user.v1.UserService.Login:input_type -> user.v1.LoginRequest
+	6,  // 3: user.v1.UserService.ChangePassword:input_type -> user.v1.ChangePasswordRequest
+	8,  // 4: user.v1.UserService.ResetPassword:input_type -> user.v1.ResetPasswordRequest
+	10, // 5: user.v1.UserService.SubmitResetPassword:input_type -> user.v1.SubmitResetPasswordRequest
+	12, // 6: user.v1.UserService.Update:input_type -> user.v1.UpdateRequest
+	14, // 7: user.v1.UserService.DeleteAccount:input_type -> user.v1.DeleteAccountRequest
+	1,  // 8: user.v1.UserService.Register:output_type -> user.v1.RegisterResponse
+	3,  // 9: user.v1.UserService.VerifyEmail:output_type -> user.v1.VerifyEmailResponse
+	5,  // 10: user.v1.UserService.Login:output_type -> user.v1.LoginResponse
+	7,  // 11: user.v1.UserService.ChangePassword:output_type -> user.v1.ChangePasswordResponse
+	9,  // 12: user.v1.UserService.ResetPassword:output_type -> user.v1.ResetPasswordResponse
+	11, // 13: user.v1.UserService.SubmitResetPassword:output_type -> user.v1.SubmitResetPasswordResponse
+	13, // 14: user.v1.UserService.Update:output_type -> user.v1.UpdateResponse
+	15, // 15: user.v1.UserService.DeleteAccount:output_type -> user.v1.DeleteAccountResponse
 	8,  // [8:16] is the sub-list for method output_type
 	0,  // [0:8] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
