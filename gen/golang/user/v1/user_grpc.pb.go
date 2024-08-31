@@ -19,14 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	UserService_Register_FullMethodName            = "/user.v1.UserService/Register"
-	UserService_VerifyEmail_FullMethodName         = "/user.v1.UserService/VerifyEmail"
-	UserService_Login_FullMethodName               = "/user.v1.UserService/Login"
-	UserService_ChangePassword_FullMethodName      = "/user.v1.UserService/ChangePassword"
-	UserService_ResetPassword_FullMethodName       = "/user.v1.UserService/ResetPassword"
-	UserService_SubmitResetPassword_FullMethodName = "/user.v1.UserService/SubmitResetPassword"
-	UserService_Update_FullMethodName              = "/user.v1.UserService/Update"
-	UserService_DeleteAccount_FullMethodName       = "/user.v1.UserService/DeleteAccount"
+	UserService_Register_FullMethodName         = "/user.v1.UserService/Register"
+	UserService_ChangePassword_FullMethodName   = "/user.v1.UserService/ChangePassword"
+	UserService_Update_FullMethodName           = "/user.v1.UserService/Update"
+	UserService_GetUserIDByEmail_FullMethodName = "/user.v1.UserService/GetUserIDByEmail"
+	UserService_DeleteAccount_FullMethodName    = "/user.v1.UserService/DeleteAccount"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -34,12 +31,9 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserServiceClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
-	VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*VerifyEmailResponse, error)
-	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	ChangePassword(ctx context.Context, in *ChangePasswordRequest, opts ...grpc.CallOption) (*ChangePasswordResponse, error)
-	ResetPassword(ctx context.Context, in *ResetPasswordRequest, opts ...grpc.CallOption) (*ResetPasswordResponse, error)
-	SubmitResetPassword(ctx context.Context, in *SubmitResetPasswordRequest, opts ...grpc.CallOption) (*SubmitResetPasswordResponse, error)
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
+	GetUserIDByEmail(ctx context.Context, in *GetUserIDByEmailRequest, opts ...grpc.CallOption) (*GetUserIDByEmailResponse, error)
 	DeleteAccount(ctx context.Context, in *DeleteAccountRequest, opts ...grpc.CallOption) (*DeleteAccountResponse, error)
 }
 
@@ -61,26 +55,6 @@ func (c *userServiceClient) Register(ctx context.Context, in *RegisterRequest, o
 	return out, nil
 }
 
-func (c *userServiceClient) VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*VerifyEmailResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(VerifyEmailResponse)
-	err := c.cc.Invoke(ctx, UserService_VerifyEmail_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *userServiceClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(LoginResponse)
-	err := c.cc.Invoke(ctx, UserService_Login_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *userServiceClient) ChangePassword(ctx context.Context, in *ChangePasswordRequest, opts ...grpc.CallOption) (*ChangePasswordResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ChangePasswordResponse)
@@ -91,30 +65,20 @@ func (c *userServiceClient) ChangePassword(ctx context.Context, in *ChangePasswo
 	return out, nil
 }
 
-func (c *userServiceClient) ResetPassword(ctx context.Context, in *ResetPasswordRequest, opts ...grpc.CallOption) (*ResetPasswordResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ResetPasswordResponse)
-	err := c.cc.Invoke(ctx, UserService_ResetPassword_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *userServiceClient) SubmitResetPassword(ctx context.Context, in *SubmitResetPasswordRequest, opts ...grpc.CallOption) (*SubmitResetPasswordResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SubmitResetPasswordResponse)
-	err := c.cc.Invoke(ctx, UserService_SubmitResetPassword_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *userServiceClient) Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(UpdateResponse)
 	err := c.cc.Invoke(ctx, UserService_Update_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) GetUserIDByEmail(ctx context.Context, in *GetUserIDByEmailRequest, opts ...grpc.CallOption) (*GetUserIDByEmailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetUserIDByEmailResponse)
+	err := c.cc.Invoke(ctx, UserService_GetUserIDByEmail_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -136,12 +100,9 @@ func (c *userServiceClient) DeleteAccount(ctx context.Context, in *DeleteAccount
 // for forward compatibility.
 type UserServiceServer interface {
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
-	VerifyEmail(context.Context, *VerifyEmailRequest) (*VerifyEmailResponse, error)
-	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	ChangePassword(context.Context, *ChangePasswordRequest) (*ChangePasswordResponse, error)
-	ResetPassword(context.Context, *ResetPasswordRequest) (*ResetPasswordResponse, error)
-	SubmitResetPassword(context.Context, *SubmitResetPasswordRequest) (*SubmitResetPasswordResponse, error)
 	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
+	GetUserIDByEmail(context.Context, *GetUserIDByEmailRequest) (*GetUserIDByEmailResponse, error)
 	DeleteAccount(context.Context, *DeleteAccountRequest) (*DeleteAccountResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
@@ -156,23 +117,14 @@ type UnimplementedUserServiceServer struct{}
 func (UnimplementedUserServiceServer) Register(context.Context, *RegisterRequest) (*RegisterResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
 }
-func (UnimplementedUserServiceServer) VerifyEmail(context.Context, *VerifyEmailRequest) (*VerifyEmailResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method VerifyEmail not implemented")
-}
-func (UnimplementedUserServiceServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
-}
 func (UnimplementedUserServiceServer) ChangePassword(context.Context, *ChangePasswordRequest) (*ChangePasswordResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangePassword not implemented")
 }
-func (UnimplementedUserServiceServer) ResetPassword(context.Context, *ResetPasswordRequest) (*ResetPasswordResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ResetPassword not implemented")
-}
-func (UnimplementedUserServiceServer) SubmitResetPassword(context.Context, *SubmitResetPasswordRequest) (*SubmitResetPasswordResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SubmitResetPassword not implemented")
-}
 func (UnimplementedUserServiceServer) Update(context.Context, *UpdateRequest) (*UpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedUserServiceServer) GetUserIDByEmail(context.Context, *GetUserIDByEmailRequest) (*GetUserIDByEmailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserIDByEmail not implemented")
 }
 func (UnimplementedUserServiceServer) DeleteAccount(context.Context, *DeleteAccountRequest) (*DeleteAccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAccount not implemented")
@@ -216,42 +168,6 @@ func _UserService_Register_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserService_VerifyEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(VerifyEmailRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServiceServer).VerifyEmail(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: UserService_VerifyEmail_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).VerifyEmail(ctx, req.(*VerifyEmailRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _UserService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LoginRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServiceServer).Login(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: UserService_Login_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).Login(ctx, req.(*LoginRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _UserService_ChangePassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ChangePasswordRequest)
 	if err := dec(in); err != nil {
@@ -270,42 +186,6 @@ func _UserService_ChangePassword_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserService_ResetPassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ResetPasswordRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServiceServer).ResetPassword(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: UserService_ResetPassword_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).ResetPassword(ctx, req.(*ResetPasswordRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _UserService_SubmitResetPassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SubmitResetPasswordRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServiceServer).SubmitResetPassword(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: UserService_SubmitResetPassword_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).SubmitResetPassword(ctx, req.(*SubmitResetPasswordRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _UserService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateRequest)
 	if err := dec(in); err != nil {
@@ -320,6 +200,24 @@ func _UserService_Update_Handler(srv interface{}, ctx context.Context, dec func(
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).Update(ctx, req.(*UpdateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_GetUserIDByEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserIDByEmailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetUserIDByEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_GetUserIDByEmail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetUserIDByEmail(ctx, req.(*GetUserIDByEmailRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -354,28 +252,16 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UserService_Register_Handler,
 		},
 		{
-			MethodName: "VerifyEmail",
-			Handler:    _UserService_VerifyEmail_Handler,
-		},
-		{
-			MethodName: "Login",
-			Handler:    _UserService_Login_Handler,
-		},
-		{
 			MethodName: "ChangePassword",
 			Handler:    _UserService_ChangePassword_Handler,
 		},
 		{
-			MethodName: "ResetPassword",
-			Handler:    _UserService_ResetPassword_Handler,
-		},
-		{
-			MethodName: "SubmitResetPassword",
-			Handler:    _UserService_SubmitResetPassword_Handler,
-		},
-		{
 			MethodName: "Update",
 			Handler:    _UserService_Update_Handler,
+		},
+		{
+			MethodName: "GetUserIDByEmail",
+			Handler:    _UserService_GetUserIDByEmail_Handler,
 		},
 		{
 			MethodName: "DeleteAccount",
