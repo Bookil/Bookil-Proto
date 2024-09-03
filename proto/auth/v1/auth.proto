@@ -6,6 +6,7 @@ option go_package = "github.com/Bookil/microservices/auth";
 
 service AuthService {
   rpc Register(RegisterRequest) returns (RegisterResponse) {}
+  rpc SendVerificationCodeAgain(SendVerificationCodeAgainRequest) returns (SendVerificationCodeAgainResponse) {}
   rpc Authentication(AuthenticationRequest) returns (AuthenticationResponse) {}
   rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse) {}
   rpc Login(LoginRequest) returns (LoginResponse) {}
@@ -17,7 +18,7 @@ service AuthService {
 }
 
 message RegisterRequest {
-  string fisrt_name = 1;
+  string first_name = 1;
   string last_name = 2;
   string email = 3;
   string password = 4;
@@ -35,8 +36,14 @@ message AuthenticationResponse {
   string user_id = 1;
 }
 
+message SendVerificationCodeAgainRequest {
+  string email = 1;
+}
+
+message SendVerificationCodeAgainResponse {}
+
 message VerifyEmailRequest {
-  string user_id = 1;
+  string email = 1;
   string verification_code = 2;
 }
 
