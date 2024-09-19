@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package email.v1;
+
+option go_package = "github.com/Bookil/microservices/email";
+
+service EmailService {
+  rpc SendVerificationCode(SendVerificationCodeRequest) returns (SendVerificationCodeResponse) {}
+  rpc SendResetPassword(SendResetPasswordRequest) returns (SendResetPasswordResponse) {}
+  rpc SendWelcome(SendWelcomeRequest) returns (SendWelcomeResponse) {}
+}
+
+message SendVerificationCodeRequest {
+  string email = 1;
+  string name = 2;
+  string verification_code = 3;
+}
+
+message SendVerificationCodeResponse {}
+
+message SendResetPasswordRequest {
+  string email = 1;
+  string name = 2;
+  string url = 3;
+  string expiry = 4;
+}
+
+message SendResetPasswordResponse {}
+
+message SendWelcomeRequest {
+  string email = 1;
+  string name = 2;
+}
+
+message SendWelcomeResponse {}
