@@ -48,5 +48,5 @@ message GetUserIDAndNameByEmailRequest {
 
 message GetUserIDAndNameByEmailResponse {
   string user_id = 1;
-  string name = 2;
+  string first_name = 2;
 }
