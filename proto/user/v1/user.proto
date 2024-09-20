@@ -8,7 +8,7 @@ service UserService {
   rpc Register(RegisterRequest) returns (RegisterResponse) {}
   rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse) {}
   rpc Update(UpdateRequest) returns (UpdateResponse) {}
-  rpc GetUserIDByEmail(GetUserIDByEmailRequest) returns (GetUserIDByEmailResponse) {}
+  rpc GetUserIDAndNameByEmail(GetUserIDAndNameByEmailRequest) returns (GetUserIDAndNameByEmailResponse) {}
   rpc DeleteAccount(DeleteAccountRequest) returns (DeleteAccountResponse) {}
 }
 
@@ -42,10 +42,11 @@ message DeleteAccountRequest {
 
 message DeleteAccountResponse {}
 
-message GetUserIDByEmailRequest {
+message GetUserIDAndNameByEmailRequest {
   string email = 1;
 }
 
-message GetUserIDByEmailResponse {
+message GetUserIDAndNameByEmailResponse {
   string user_id = 1;
+  string name = 2;
 }

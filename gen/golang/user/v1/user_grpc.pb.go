@@ -19,11 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	UserService_Register_FullMethodName         = "/user.v1.UserService/Register"
-	UserService_ChangePassword_FullMethodName   = "/user.v1.UserService/ChangePassword"
-	UserService_Update_FullMethodName           = "/user.v1.UserService/Update"
-	UserService_GetUserIDByEmail_FullMethodName = "/user.v1.UserService/GetUserIDByEmail"
-	UserService_DeleteAccount_FullMethodName    = "/user.v1.UserService/DeleteAccount"
+	UserService_Register_FullMethodName                = "/user.v1.UserService/Register"
+	UserService_ChangePassword_FullMethodName          = "/user.v1.UserService/ChangePassword"
+	UserService_Update_FullMethodName                  = "/user.v1.UserService/Update"
+	UserService_GetUserIDAndNameByEmail_FullMethodName = "/user.v1.UserService/GetUserIDAndNameByEmail"
+	UserService_DeleteAccount_FullMethodName           = "/user.v1.UserService/DeleteAccount"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -33,7 +33,7 @@ type UserServiceClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 	ChangePassword(ctx context.Context, in *ChangePasswordRequest, opts ...grpc.CallOption) (*ChangePasswordResponse, error)
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
-	GetUserIDByEmail(ctx context.Context, in *GetUserIDByEmailRequest, opts ...grpc.CallOption) (*GetUserIDByEmailResponse, error)
+	GetUserIDAndNameByEmail(ctx context.Context, in *GetUserIDAndNameByEmailRequest, opts ...grpc.CallOption) (*GetUserIDAndNameByEmailResponse, error)
 	DeleteAccount(ctx context.Context, in *DeleteAccountRequest, opts ...grpc.CallOption) (*DeleteAccountResponse, error)
 }
 
@@ -75,10 +75,10 @@ func (c *userServiceClient) Update(ctx context.Context, in *UpdateRequest, opts 
 	return out, nil
 }
 
-func (c *userServiceClient) GetUserIDByEmail(ctx context.Context, in *GetUserIDByEmailRequest, opts ...grpc.CallOption) (*GetUserIDByEmailResponse, error) {
+func (c *userServiceClient) GetUserIDAndNameByEmail(ctx context.Context, in *GetUserIDAndNameByEmailRequest, opts ...grpc.CallOption) (*GetUserIDAndNameByEmailResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetUserIDByEmailResponse)
-	err := c.cc.Invoke(ctx, UserService_GetUserIDByEmail_FullMethodName, in, out, cOpts...)
+	out := new(GetUserIDAndNameByEmailResponse)
+	err := c.cc.Invoke(ctx, UserService_GetUserIDAndNameByEmail_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +102,7 @@ type UserServiceServer interface {
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	ChangePassword(context.Context, *ChangePasswordRequest) (*ChangePasswordResponse, error)
 	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
-	GetUserIDByEmail(context.Context, *GetUserIDByEmailRequest) (*GetUserIDByEmailResponse, error)
+	GetUserIDAndNameByEmail(context.Context, *GetUserIDAndNameByEmailRequest) (*GetUserIDAndNameByEmailResponse, error)
 	DeleteAccount(context.Context, *DeleteAccountRequest) (*DeleteAccountResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
@@ -123,8 +123,8 @@ func (UnimplementedUserServiceServer) ChangePassword(context.Context, *ChangePas
 func (UnimplementedUserServiceServer) Update(context.Context, *UpdateRequest) (*UpdateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
-func (UnimplementedUserServiceServer) GetUserIDByEmail(context.Context, *GetUserIDByEmailRequest) (*GetUserIDByEmailResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUserIDByEmail not implemented")
+func (UnimplementedUserServiceServer) GetUserIDAndNameByEmail(context.Context, *GetUserIDAndNameByEmailRequest) (*GetUserIDAndNameByEmailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserIDAndNameByEmail not implemented")
 }
 func (UnimplementedUserServiceServer) DeleteAccount(context.Context, *DeleteAccountRequest) (*DeleteAccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteAccount not implemented")
@@ -204,20 +204,20 @@ func _UserService_Update_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _UserService_GetUserIDByEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetUserIDByEmailRequest)
+func _UserService_GetUserIDAndNameByEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserIDAndNameByEmailRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServiceServer).GetUserIDByEmail(ctx, in)
+		return srv.(UserServiceServer).GetUserIDAndNameByEmail(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: UserService_GetUserIDByEmail_FullMethodName,
+		FullMethod: UserService_GetUserIDAndNameByEmail_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).GetUserIDByEmail(ctx, req.(*GetUserIDByEmailRequest))
+		return srv.(UserServiceServer).GetUserIDAndNameByEmail(ctx, req.(*GetUserIDAndNameByEmailRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -260,8 +260,8 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _UserService_Update_Handler,
 		},
 		{
-			MethodName: "GetUserIDByEmail",
-			Handler:    _UserService_GetUserIDByEmail_Handler,
+			MethodName: "GetUserIDAndNameByEmail",
+			Handler:    _UserService_GetUserIDAndNameByEmail_Handler,
 		},
 		{
 			MethodName: "DeleteAccount",
