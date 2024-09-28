@@ -1,0 +1,127 @@
+syntax = "proto3";
+
+package product.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/Bookil/microservices/product";
+
+service ProductService {
+  rpc AddAuthor(AddAuthorRequest) returns (AddAuthorResponse) {}
+  rpc GetAllAuthors(GetAllAuthorsRequest) returns (stream GetAllAuthorsResponse) {}
+  rpc GetAllBooks(GetAllBooksRequest) returns (stream GetAllBooksResponse) {}
+  rpc AddBook(AddBookRequest) returns (AddBookResponse) {}
+  rpc GetBookByID(GetBookByIDRequest) returns (GetBookByIDResponse) {}
+  rpc GetBooksByTitle(GetBooksByTitleRequest) returns (GetBooksByTitleResponse) {}
+  rpc GetBooksByAuthor(GetBooksByAuthorRequest) returns (GetBooksByAuthorResponse) {}
+  rpc GetBooksByGenre(GetBooksByGenreRequest) returns (GetBooksByGenreResponse) {}
+  rpc ModifyBookByID(ModifyBookByIDRequest) returns (ModifyBookByIDResponse) {}
+  rpc DeleteBookByID(DeleteBookByIDRequest) returns (DeleteBookByIDResponse) {}
+  rpc AddGenre(AddGenreRequest) returns (AddGenreResponse) {}
+  rpc GetAllGenres(GetAllGenresRequest) returns (stream GetAllGenresResponse) {}
+}
+
+message AddAuthorRequest {
+  Author author = 1;
+}
+
+message AddAuthorResponse {}
+
+message GetAllAuthorsRequest {}
+
+message GetAllAuthorsResponse {
+  Author author = 1;
+}
+
+message GetAllBooksRequest {}
+
+message GetAllBooksResponse {
+  Book book = 1;
+}
+
+message AddBookRequest {
+  Book book = 1;
+}
+
+message AddBookResponse {}
+
+message GetBookByIDRequest {
+  uint32 book_id = 1;
+}
+
+message GetBookByIDResponse {
+  Book book = 1;
+}
+
+message GetBooksByTitleRequest {
+  string title = 1;
+}
+
+message GetBooksByTitleResponse {
+  Book book = 1;
+}
+
+message GetBooksByAuthorRequest {
+  string author_name = 1;
+}
+
+message GetBooksByAuthorResponse {
+  Book book = 1;
+}
+
+message GetBooksByGenreRequest {
+  string genre_name = 1;
+}
+
+message GetBooksByGenreResponse {
+  Book book = 1;
+}
+
+message DeleteBookByIDRequest {
+  uint32 book_id = 1;
+}
+
+message DeleteBookByIDResponse {}
+
+message ModifyBookByIDRequest {
+  uint32 book_id = 1;
+  Book book = 2;
+}
+
+message ModifyBookByIDResponse {}
+
+message AddGenreRequest {
+  Genre genre = 1;
+}
+
+message AddGenreResponse {}
+
+message GetAllGenresRequest {}
+
+message GetAllGenresResponse {
+  Genre genre = 1;
+}
+
+message Book {
+  uint32 book_id = 1;
+  string title = 2;
+  string description = 3;
+  float price = 4;
+  uint32 quantity = 5;
+  repeated Author authors = 6;
+  repeated Genre genre = 7;
+  uint32 year = 8;
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp updated_at = 10;
+}
+
+message Author {
+  uint32 author_id = 1;
+  string name = 2;
+  string about = 3;
+}
+
+message Genre {
+  uint32 genre_id = 1;
+  string name = 2;
+}
