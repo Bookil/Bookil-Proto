@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package cart.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/Bookil/microservices/cart";
+
+service CartService {
+  rpc AddBookToCart(AddBookToCartRequest) returns (AddBookToCartResponse) {}
+  rpc DeleteBookFromCart(DeleteBookFromCartRequest) returns (DeleteBookFromCartResponse) {}
+  rpc GetCart(GetCartRequest) returns (GetCartResponse) {}
+}
+
+message AddBookToCartRequest {
+  uint32 book_id = 1;
+  string customer_id = 3;
+}
+
+message AddBookToCartResponse {}
+
+message DeleteBookFromCartRequest {
+  uint32 book_id = 1;
+  uint32 cart_id = 2;
+}
+
+message DeleteBookFromCartResponse {}
+
+message GetCartRequest {
+  string cart_id = 1;
+}
+
+message GetCartResponse {
+  Cart cart = 1;
+}
+
+message CartItem {
+  uint32 cart_item_id = 1;
+  string title = 2;
+  uint32 product_id = 3;
+  float unit_price = 4;
+  uint32 quantity = 5;
+}
+
+message Cart {
+  string cart_id = 1;
+  string customer_id = 2;
+  repeated CartItem cart_items = 3;
+  float total_price = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
+}

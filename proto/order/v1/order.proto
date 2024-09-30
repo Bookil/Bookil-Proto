@@ -11,8 +11,6 @@ service OrderService {
   rpc Get(GetRequest) returns (GetResponse) {}
   rpc Update(UpdateRequest) returns (UpdateResponse) {}
   rpc Delete(DeleteRequest) returns (DeleteResponse) {}
-  rpc AddBookToOrder(AddBookToOrderRequest) returns (AddBookToOrderResponse) {}
-  rpc DeleteBookFromOrder(DeleteBookFromOrderRequest) returns (DeleteBookFromOrderResponse) {}
 }
 
 message CreateRequest {
@@ -48,20 +46,6 @@ message DeleteRequest {
 message DeleteResponse {
   bool status = 1;
 }
-
-message AddBookToOrderRequest {
-  uint32 book_id = 1;
-  string customer_id = 3;
-}
-
-message AddBookToOrderResponse {}
-
-message DeleteBookFromOrderRequest {
-  uint32 book_id = 1;
-  uint32 order_id = 2;
-}
-
-message DeleteBookFromOrderResponse {}
 
 message Item {
   uint32 item_id = 1;

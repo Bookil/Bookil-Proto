@@ -19,12 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	OrderService_Create_FullMethodName              = "/order.v1.OrderService/Create"
-	OrderService_Get_FullMethodName                 = "/order.v1.OrderService/Get"
-	OrderService_Update_FullMethodName              = "/order.v1.OrderService/Update"
-	OrderService_Delete_FullMethodName              = "/order.v1.OrderService/Delete"
-	OrderService_AddBookToOrder_FullMethodName      = "/order.v1.OrderService/AddBookToOrder"
-	OrderService_DeleteBookFromOrder_FullMethodName = "/order.v1.OrderService/DeleteBookFromOrder"
+	OrderService_Create_FullMethodName = "/order.v1.OrderService/Create"
+	OrderService_Get_FullMethodName    = "/order.v1.OrderService/Get"
+	OrderService_Update_FullMethodName = "/order.v1.OrderService/Update"
+	OrderService_Delete_FullMethodName = "/order.v1.OrderService/Delete"
 )
 
 // OrderServiceClient is the client API for OrderService service.
@@ -35,8 +33,6 @@ type OrderServiceClient interface {
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
 	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
-	AddBookToOrder(ctx context.Context, in *AddBookToOrderRequest, opts ...grpc.CallOption) (*AddBookToOrderResponse, error)
-	DeleteBookFromOrder(ctx context.Context, in *DeleteBookFromOrderRequest, opts ...grpc.CallOption) (*DeleteBookFromOrderResponse, error)
 }
 
 type orderServiceClient struct {
@@ -87,26 +83,6 @@ func (c *orderServiceClient) Delete(ctx context.Context, in *DeleteRequest, opts
 	return out, nil
 }
 
-func (c *orderServiceClient) AddBookToOrder(ctx context.Context, in *AddBookToOrderRequest, opts ...grpc.CallOption) (*AddBookToOrderResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(AddBookToOrderResponse)
-	err := c.cc.Invoke(ctx, OrderService_AddBookToOrder_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *orderServiceClient) DeleteBookFromOrder(ctx context.Context, in *DeleteBookFromOrderRequest, opts ...grpc.CallOption) (*DeleteBookFromOrderResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DeleteBookFromOrderResponse)
-	err := c.cc.Invoke(ctx, OrderService_DeleteBookFromOrder_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // OrderServiceServer is the server API for OrderService service.
 // All implementations must embed UnimplementedOrderServiceServer
 // for forward compatibility.
@@ -115,8 +91,6 @@ type OrderServiceServer interface {
 	Get(context.Context, *GetRequest) (*GetResponse, error)
 	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
 	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
-	AddBookToOrder(context.Context, *AddBookToOrderRequest) (*AddBookToOrderResponse, error)
-	DeleteBookFromOrder(context.Context, *DeleteBookFromOrderRequest) (*DeleteBookFromOrderResponse, error)
 	mustEmbedUnimplementedOrderServiceServer()
 }
 
@@ -138,12 +112,6 @@ func (UnimplementedOrderServiceServer) Update(context.Context, *UpdateRequest) (
 }
 func (UnimplementedOrderServiceServer) Delete(context.Context, *DeleteRequest) (*DeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
-}
-func (UnimplementedOrderServiceServer) AddBookToOrder(context.Context, *AddBookToOrderRequest) (*AddBookToOrderResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method AddBookToOrder not implemented")
-}
-func (UnimplementedOrderServiceServer) DeleteBookFromOrder(context.Context, *DeleteBookFromOrderRequest) (*DeleteBookFromOrderResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteBookFromOrder not implemented")
 }
 func (UnimplementedOrderServiceServer) mustEmbedUnimplementedOrderServiceServer() {}
 func (UnimplementedOrderServiceServer) testEmbeddedByValue()                      {}
@@ -238,42 +206,6 @@ func _OrderService_Delete_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrderService_AddBookToOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddBookToOrderRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OrderServiceServer).AddBookToOrder(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: OrderService_AddBookToOrder_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderServiceServer).AddBookToOrder(ctx, req.(*AddBookToOrderRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _OrderService_DeleteBookFromOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteBookFromOrderRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(OrderServiceServer).DeleteBookFromOrder(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: OrderService_DeleteBookFromOrder_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderServiceServer).DeleteBookFromOrder(ctx, req.(*DeleteBookFromOrderRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // OrderService_ServiceDesc is the grpc.ServiceDesc for OrderService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -296,14 +228,6 @@ var OrderService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Delete",
 			Handler:    _OrderService_Delete_Handler,
-		},
-		{
-			MethodName: "AddBookToOrder",
-			Handler:    _OrderService_AddBookToOrder_Handler,
-		},
-		{
-			MethodName: "DeleteBookFromOrder",
-			Handler:    _OrderService_DeleteBookFromOrder_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
