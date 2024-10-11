@@ -19,6 +19,8 @@ service ProductService {
   rpc DeleteBookByID(DeleteBookByIDRequest) returns (DeleteBookByIDResponse) {}
   rpc AddGenre(AddGenreRequest) returns (AddGenreResponse) {}
   rpc GetAllGenres(GetAllGenresRequest) returns (stream GetAllGenresResponse) {}
+  rpc AddBookToCart(AddBookToCartRequest) returns (AddBookToCartResponse) {}
+  rpc DeleteBookFromCartByID(DeleteBookFromCartByIDRequest) returns (DeleteBookFromCartByIDResponse) {}
 }
 
 message AddAuthorRequest {
@@ -108,6 +110,19 @@ message GetAllGenresRequest {}
 message GetAllGenresResponse {
   Genre genre = 1;
 }
+
+message AddBookToCartRequest {
+  uint32 book_id = 1;
+}
+
+message AddBookToCartResponse {}
+
+message DeleteBookFromCartByIDRequest {
+  uint32 book_id = 1;
+  uint32 cart_id = 2;
+}
+
+message DeleteBookFromCartByIDResponse {}
 
 message Book {
   uint32 book_id = 1;

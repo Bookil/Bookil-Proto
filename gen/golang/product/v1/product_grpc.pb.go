@@ -19,18 +19,20 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ProductService_AddAuthor_FullMethodName        = "/product.v1.ProductService/AddAuthor"
-	ProductService_GetAllAuthors_FullMethodName    = "/product.v1.ProductService/GetAllAuthors"
-	ProductService_GetAllBooks_FullMethodName      = "/product.v1.ProductService/GetAllBooks"
-	ProductService_AddBook_FullMethodName          = "/product.v1.ProductService/AddBook"
-	ProductService_GetBookByID_FullMethodName      = "/product.v1.ProductService/GetBookByID"
-	ProductService_GetBooksByTitle_FullMethodName  = "/product.v1.ProductService/GetBooksByTitle"
-	ProductService_GetBooksByAuthor_FullMethodName = "/product.v1.ProductService/GetBooksByAuthor"
-	ProductService_GetBooksByGenre_FullMethodName  = "/product.v1.ProductService/GetBooksByGenre"
-	ProductService_ModifyBookByID_FullMethodName   = "/product.v1.ProductService/ModifyBookByID"
-	ProductService_DeleteBookByID_FullMethodName   = "/product.v1.ProductService/DeleteBookByID"
-	ProductService_AddGenre_FullMethodName         = "/product.v1.ProductService/AddGenre"
-	ProductService_GetAllGenres_FullMethodName     = "/product.v1.ProductService/GetAllGenres"
+	ProductService_AddAuthor_FullMethodName              = "/product.v1.ProductService/AddAuthor"
+	ProductService_GetAllAuthors_FullMethodName          = "/product.v1.ProductService/GetAllAuthors"
+	ProductService_GetAllBooks_FullMethodName            = "/product.v1.ProductService/GetAllBooks"
+	ProductService_AddBook_FullMethodName                = "/product.v1.ProductService/AddBook"
+	ProductService_GetBookByID_FullMethodName            = "/product.v1.ProductService/GetBookByID"
+	ProductService_GetBooksByTitle_FullMethodName        = "/product.v1.ProductService/GetBooksByTitle"
+	ProductService_GetBooksByAuthor_FullMethodName       = "/product.v1.ProductService/GetBooksByAuthor"
+	ProductService_GetBooksByGenre_FullMethodName        = "/product.v1.ProductService/GetBooksByGenre"
+	ProductService_ModifyBookByID_FullMethodName         = "/product.v1.ProductService/ModifyBookByID"
+	ProductService_DeleteBookByID_FullMethodName         = "/product.v1.ProductService/DeleteBookByID"
+	ProductService_AddGenre_FullMethodName               = "/product.v1.ProductService/AddGenre"
+	ProductService_GetAllGenres_FullMethodName           = "/product.v1.ProductService/GetAllGenres"
+	ProductService_AddBookToCart_FullMethodName          = "/product.v1.ProductService/AddBookToCart"
+	ProductService_DeleteBookFromCartByID_FullMethodName = "/product.v1.ProductService/DeleteBookFromCartByID"
 )
 
 // ProductServiceClient is the client API for ProductService service.
@@ -49,6 +51,8 @@ type ProductServiceClient interface {
 	DeleteBookByID(ctx context.Context, in *DeleteBookByIDRequest, opts ...grpc.CallOption) (*DeleteBookByIDResponse, error)
 	AddGenre(ctx context.Context, in *AddGenreRequest, opts ...grpc.CallOption) (*AddGenreResponse, error)
 	GetAllGenres(ctx context.Context, in *GetAllGenresRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetAllGenresResponse], error)
+	AddBookToCart(ctx context.Context, in *AddBookToCartRequest, opts ...grpc.CallOption) (*AddBookToCartResponse, error)
+	DeleteBookFromCartByID(ctx context.Context, in *DeleteBookFromCartByIDRequest, opts ...grpc.CallOption) (*DeleteBookFromCartByIDResponse, error)
 }
 
 type productServiceClient struct {
@@ -233,6 +237,26 @@ func (c *productServiceClient) GetAllGenres(ctx context.Context, in *GetAllGenre
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type ProductService_GetAllGenresClient = grpc.ServerStreamingClient[GetAllGenresResponse]
 
+func (c *productServiceClient) AddBookToCart(ctx context.Context, in *AddBookToCartRequest, opts ...grpc.CallOption) (*AddBookToCartResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddBookToCartResponse)
+	err := c.cc.Invoke(ctx, ProductService_AddBookToCart_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productServiceClient) DeleteBookFromCartByID(ctx context.Context, in *DeleteBookFromCartByIDRequest, opts ...grpc.CallOption) (*DeleteBookFromCartByIDResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteBookFromCartByIDResponse)
+	err := c.cc.Invoke(ctx, ProductService_DeleteBookFromCartByID_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProductServiceServer is the server API for ProductService service.
 // All implementations must embed UnimplementedProductServiceServer
 // for forward compatibility.
@@ -249,6 +273,8 @@ type ProductServiceServer interface {
 	DeleteBookByID(context.Context, *DeleteBookByIDRequest) (*DeleteBookByIDResponse, error)
 	AddGenre(context.Context, *AddGenreRequest) (*AddGenreResponse, error)
 	GetAllGenres(*GetAllGenresRequest, grpc.ServerStreamingServer[GetAllGenresResponse]) error
+	AddBookToCart(context.Context, *AddBookToCartRequest) (*AddBookToCartResponse, error)
+	DeleteBookFromCartByID(context.Context, *DeleteBookFromCartByIDRequest) (*DeleteBookFromCartByIDResponse, error)
 	mustEmbedUnimplementedProductServiceServer()
 }
 
@@ -294,6 +320,12 @@ func (UnimplementedProductServiceServer) AddGenre(context.Context, *AddGenreRequ
 }
 func (UnimplementedProductServiceServer) GetAllGenres(*GetAllGenresRequest, grpc.ServerStreamingServer[GetAllGenresResponse]) error {
 	return status.Errorf(codes.Unimplemented, "method GetAllGenres not implemented")
+}
+func (UnimplementedProductServiceServer) AddBookToCart(context.Context, *AddBookToCartRequest) (*AddBookToCartResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddBookToCart not implemented")
+}
+func (UnimplementedProductServiceServer) DeleteBookFromCartByID(context.Context, *DeleteBookFromCartByIDRequest) (*DeleteBookFromCartByIDResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteBookFromCartByID not implemented")
 }
 func (UnimplementedProductServiceServer) mustEmbedUnimplementedProductServiceServer() {}
 func (UnimplementedProductServiceServer) testEmbeddedByValue()                        {}
@@ -490,6 +522,42 @@ func _ProductService_GetAllGenres_Handler(srv interface{}, stream grpc.ServerStr
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type ProductService_GetAllGenresServer = grpc.ServerStreamingServer[GetAllGenresResponse]
 
+func _ProductService_AddBookToCart_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddBookToCartRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServiceServer).AddBookToCart(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProductService_AddBookToCart_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServiceServer).AddBookToCart(ctx, req.(*AddBookToCartRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProductService_DeleteBookFromCartByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteBookFromCartByIDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServiceServer).DeleteBookFromCartByID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProductService_DeleteBookFromCartByID_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServiceServer).DeleteBookFromCartByID(ctx, req.(*DeleteBookFromCartByIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProductService_ServiceDesc is the grpc.ServiceDesc for ProductService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -520,6 +588,14 @@ var ProductService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddGenre",
 			Handler:    _ProductService_AddGenre_Handler,
+		},
+		{
+			MethodName: "AddBookToCart",
+			Handler:    _ProductService_AddBookToCart_Handler,
+		},
+		{
+			MethodName: "DeleteBookFromCartByID",
+			Handler:    _ProductService_DeleteBookFromCartByID_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
