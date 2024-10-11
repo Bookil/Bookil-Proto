@@ -12,9 +12,9 @@ service ProductService {
   rpc GetAllBooks(GetAllBooksRequest) returns (stream GetAllBooksResponse) {}
   rpc AddBook(AddBookRequest) returns (AddBookResponse) {}
   rpc GetBookByID(GetBookByIDRequest) returns (GetBookByIDResponse) {}
-  rpc GetBooksByTitle(GetBooksByTitleRequest) returns (GetBooksByTitleResponse) {}
-  rpc GetBooksByAuthor(GetBooksByAuthorRequest) returns (GetBooksByAuthorResponse) {}
-  rpc GetBooksByGenre(GetBooksByGenreRequest) returns (GetBooksByGenreResponse) {}
+  rpc GetBooksByTitle(GetBooksByTitleRequest) returns (stream GetBooksByTitleResponse) {}
+  rpc GetBooksByAuthor(GetBooksByAuthorRequest) returns (stream GetBooksByAuthorResponse) {}
+  rpc GetBooksByGenre(GetBooksByGenreRequest) returns (stream GetBooksByGenreResponse) {}
   rpc ModifyBookByID(ModifyBookByIDRequest) returns (ModifyBookByIDResponse) {}
   rpc DeleteBookByID(DeleteBookByIDRequest) returns (DeleteBookByIDResponse) {}
   rpc AddGenre(AddGenreRequest) returns (AddGenreResponse) {}
@@ -22,7 +22,8 @@ service ProductService {
 }
 
 message AddAuthorRequest {
-  Author author = 1;
+  string name = 1;
+  string about = 2;
 }
 
 message AddAuthorResponse {}
@@ -40,7 +41,13 @@ message GetAllBooksResponse {
 }
 
 message AddBookRequest {
-  Book book = 1;
+  string title = 1;
+  string description = 2;
+  float price = 3;
+  uint32 quantity = 4;
+  repeated Author authors = 5;
+  repeated Genre genre = 6;
+  uint32 year = 7;
 }
 
 message AddBookResponse {}
@@ -91,7 +98,7 @@ message ModifyBookByIDRequest {
 message ModifyBookByIDResponse {}
 
 message AddGenreRequest {
-  Genre genre = 1;
+  string name = 1;
 }
 
 message AddGenreResponse {}

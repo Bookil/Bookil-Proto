@@ -42,9 +42,9 @@ type ProductServiceClient interface {
 	GetAllBooks(ctx context.Context, in *GetAllBooksRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetAllBooksResponse], error)
 	AddBook(ctx context.Context, in *AddBookRequest, opts ...grpc.CallOption) (*AddBookResponse, error)
 	GetBookByID(ctx context.Context, in *GetBookByIDRequest, opts ...grpc.CallOption) (*GetBookByIDResponse, error)
-	GetBooksByTitle(ctx context.Context, in *GetBooksByTitleRequest, opts ...grpc.CallOption) (*GetBooksByTitleResponse, error)
-	GetBooksByAuthor(ctx context.Context, in *GetBooksByAuthorRequest, opts ...grpc.CallOption) (*GetBooksByAuthorResponse, error)
-	GetBooksByGenre(ctx context.Context, in *GetBooksByGenreRequest, opts ...grpc.CallOption) (*GetBooksByGenreResponse, error)
+	GetBooksByTitle(ctx context.Context, in *GetBooksByTitleRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetBooksByTitleResponse], error)
+	GetBooksByAuthor(ctx context.Context, in *GetBooksByAuthorRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetBooksByAuthorResponse], error)
+	GetBooksByGenre(ctx context.Context, in *GetBooksByGenreRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetBooksByGenreResponse], error)
 	ModifyBookByID(ctx context.Context, in *ModifyBookByIDRequest, opts ...grpc.CallOption) (*ModifyBookByIDResponse, error)
 	DeleteBookByID(ctx context.Context, in *DeleteBookByIDRequest, opts ...grpc.CallOption) (*DeleteBookByIDResponse, error)
 	AddGenre(ctx context.Context, in *AddGenreRequest, opts ...grpc.CallOption) (*AddGenreResponse, error)
@@ -127,35 +127,62 @@ func (c *productServiceClient) GetBookByID(ctx context.Context, in *GetBookByIDR
 	return out, nil
 }
 
-func (c *productServiceClient) GetBooksByTitle(ctx context.Context, in *GetBooksByTitleRequest, opts ...grpc.CallOption) (*GetBooksByTitleResponse, error) {
+func (c *productServiceClient) GetBooksByTitle(ctx context.Context, in *GetBooksByTitleRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetBooksByTitleResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetBooksByTitleResponse)
-	err := c.cc.Invoke(ctx, ProductService_GetBooksByTitle_FullMethodName, in, out, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &ProductService_ServiceDesc.Streams[2], ProductService_GetBooksByTitle_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	return out, nil
+	x := &grpc.GenericClientStream[GetBooksByTitleRequest, GetBooksByTitleResponse]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
 }
 
-func (c *productServiceClient) GetBooksByAuthor(ctx context.Context, in *GetBooksByAuthorRequest, opts ...grpc.CallOption) (*GetBooksByAuthorResponse, error) {
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type ProductService_GetBooksByTitleClient = grpc.ServerStreamingClient[GetBooksByTitleResponse]
+
+func (c *productServiceClient) GetBooksByAuthor(ctx context.Context, in *GetBooksByAuthorRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetBooksByAuthorResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetBooksByAuthorResponse)
-	err := c.cc.Invoke(ctx, ProductService_GetBooksByAuthor_FullMethodName, in, out, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &ProductService_ServiceDesc.Streams[3], ProductService_GetBooksByAuthor_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	return out, nil
+	x := &grpc.GenericClientStream[GetBooksByAuthorRequest, GetBooksByAuthorResponse]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
 }
 
-func (c *productServiceClient) GetBooksByGenre(ctx context.Context, in *GetBooksByGenreRequest, opts ...grpc.CallOption) (*GetBooksByGenreResponse, error) {
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type ProductService_GetBooksByAuthorClient = grpc.ServerStreamingClient[GetBooksByAuthorResponse]
+
+func (c *productServiceClient) GetBooksByGenre(ctx context.Context, in *GetBooksByGenreRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetBooksByGenreResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetBooksByGenreResponse)
-	err := c.cc.Invoke(ctx, ProductService_GetBooksByGenre_FullMethodName, in, out, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &ProductService_ServiceDesc.Streams[4], ProductService_GetBooksByGenre_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	return out, nil
+	x := &grpc.GenericClientStream[GetBooksByGenreRequest, GetBooksByGenreResponse]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
 }
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type ProductService_GetBooksByGenreClient = grpc.ServerStreamingClient[GetBooksByGenreResponse]
 
 func (c *productServiceClient) ModifyBookByID(ctx context.Context, in *ModifyBookByIDRequest, opts ...grpc.CallOption) (*ModifyBookByIDResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
@@ -189,7 +216,7 @@ func (c *productServiceClient) AddGenre(ctx context.Context, in *AddGenreRequest
 
 func (c *productServiceClient) GetAllGenres(ctx context.Context, in *GetAllGenresRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetAllGenresResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &ProductService_ServiceDesc.Streams[2], ProductService_GetAllGenres_FullMethodName, cOpts...)
+	stream, err := c.cc.NewStream(ctx, &ProductService_ServiceDesc.Streams[5], ProductService_GetAllGenres_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -215,9 +242,9 @@ type ProductServiceServer interface {
 	GetAllBooks(*GetAllBooksRequest, grpc.ServerStreamingServer[GetAllBooksResponse]) error
 	AddBook(context.Context, *AddBookRequest) (*AddBookResponse, error)
 	GetBookByID(context.Context, *GetBookByIDRequest) (*GetBookByIDResponse, error)
-	GetBooksByTitle(context.Context, *GetBooksByTitleRequest) (*GetBooksByTitleResponse, error)
-	GetBooksByAuthor(context.Context, *GetBooksByAuthorRequest) (*GetBooksByAuthorResponse, error)
-	GetBooksByGenre(context.Context, *GetBooksByGenreRequest) (*GetBooksByGenreResponse, error)
+	GetBooksByTitle(*GetBooksByTitleRequest, grpc.ServerStreamingServer[GetBooksByTitleResponse]) error
+	GetBooksByAuthor(*GetBooksByAuthorRequest, grpc.ServerStreamingServer[GetBooksByAuthorResponse]) error
+	GetBooksByGenre(*GetBooksByGenreRequest, grpc.ServerStreamingServer[GetBooksByGenreResponse]) error
 	ModifyBookByID(context.Context, *ModifyBookByIDRequest) (*ModifyBookByIDResponse, error)
 	DeleteBookByID(context.Context, *DeleteBookByIDRequest) (*DeleteBookByIDResponse, error)
 	AddGenre(context.Context, *AddGenreRequest) (*AddGenreResponse, error)
@@ -247,14 +274,14 @@ func (UnimplementedProductServiceServer) AddBook(context.Context, *AddBookReques
 func (UnimplementedProductServiceServer) GetBookByID(context.Context, *GetBookByIDRequest) (*GetBookByIDResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBookByID not implemented")
 }
-func (UnimplementedProductServiceServer) GetBooksByTitle(context.Context, *GetBooksByTitleRequest) (*GetBooksByTitleResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetBooksByTitle not implemented")
+func (UnimplementedProductServiceServer) GetBooksByTitle(*GetBooksByTitleRequest, grpc.ServerStreamingServer[GetBooksByTitleResponse]) error {
+	return status.Errorf(codes.Unimplemented, "method GetBooksByTitle not implemented")
 }
-func (UnimplementedProductServiceServer) GetBooksByAuthor(context.Context, *GetBooksByAuthorRequest) (*GetBooksByAuthorResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetBooksByAuthor not implemented")
+func (UnimplementedProductServiceServer) GetBooksByAuthor(*GetBooksByAuthorRequest, grpc.ServerStreamingServer[GetBooksByAuthorResponse]) error {
+	return status.Errorf(codes.Unimplemented, "method GetBooksByAuthor not implemented")
 }
-func (UnimplementedProductServiceServer) GetBooksByGenre(context.Context, *GetBooksByGenreRequest) (*GetBooksByGenreResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetBooksByGenre not implemented")
+func (UnimplementedProductServiceServer) GetBooksByGenre(*GetBooksByGenreRequest, grpc.ServerStreamingServer[GetBooksByGenreResponse]) error {
+	return status.Errorf(codes.Unimplemented, "method GetBooksByGenre not implemented")
 }
 func (UnimplementedProductServiceServer) ModifyBookByID(context.Context, *ModifyBookByIDRequest) (*ModifyBookByIDResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ModifyBookByID not implemented")
@@ -365,59 +392,38 @@ func _ProductService_GetBookByID_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ProductService_GetBooksByTitle_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetBooksByTitleRequest)
-	if err := dec(in); err != nil {
-		return nil, err
+func _ProductService_GetBooksByTitle_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetBooksByTitleRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
 	}
-	if interceptor == nil {
-		return srv.(ProductServiceServer).GetBooksByTitle(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ProductService_GetBooksByTitle_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductServiceServer).GetBooksByTitle(ctx, req.(*GetBooksByTitleRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	return srv.(ProductServiceServer).GetBooksByTitle(m, &grpc.GenericServerStream[GetBooksByTitleRequest, GetBooksByTitleResponse]{ServerStream: stream})
 }
 
-func _ProductService_GetBooksByAuthor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetBooksByAuthorRequest)
-	if err := dec(in); err != nil {
-		return nil, err
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type ProductService_GetBooksByTitleServer = grpc.ServerStreamingServer[GetBooksByTitleResponse]
+
+func _ProductService_GetBooksByAuthor_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetBooksByAuthorRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
 	}
-	if interceptor == nil {
-		return srv.(ProductServiceServer).GetBooksByAuthor(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ProductService_GetBooksByAuthor_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductServiceServer).GetBooksByAuthor(ctx, req.(*GetBooksByAuthorRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	return srv.(ProductServiceServer).GetBooksByAuthor(m, &grpc.GenericServerStream[GetBooksByAuthorRequest, GetBooksByAuthorResponse]{ServerStream: stream})
 }
 
-func _ProductService_GetBooksByGenre_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetBooksByGenreRequest)
-	if err := dec(in); err != nil {
-		return nil, err
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type ProductService_GetBooksByAuthorServer = grpc.ServerStreamingServer[GetBooksByAuthorResponse]
+
+func _ProductService_GetBooksByGenre_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetBooksByGenreRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
 	}
-	if interceptor == nil {
-		return srv.(ProductServiceServer).GetBooksByGenre(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ProductService_GetBooksByGenre_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProductServiceServer).GetBooksByGenre(ctx, req.(*GetBooksByGenreRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	return srv.(ProductServiceServer).GetBooksByGenre(m, &grpc.GenericServerStream[GetBooksByGenreRequest, GetBooksByGenreResponse]{ServerStream: stream})
 }
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type ProductService_GetBooksByGenreServer = grpc.ServerStreamingServer[GetBooksByGenreResponse]
 
 func _ProductService_ModifyBookByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ModifyBookByIDRequest)
@@ -504,18 +510,6 @@ var ProductService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ProductService_GetBookByID_Handler,
 		},
 		{
-			MethodName: "GetBooksByTitle",
-			Handler:    _ProductService_GetBooksByTitle_Handler,
-		},
-		{
-			MethodName: "GetBooksByAuthor",
-			Handler:    _ProductService_GetBooksByAuthor_Handler,
-		},
-		{
-			MethodName: "GetBooksByGenre",
-			Handler:    _ProductService_GetBooksByGenre_Handler,
-		},
-		{
 			MethodName: "ModifyBookByID",
 			Handler:    _ProductService_ModifyBookByID_Handler,
 		},
@@ -537,6 +531,21 @@ var ProductService_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "GetAllBooks",
 			Handler:       _ProductService_GetAllBooks_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "GetBooksByTitle",
+			Handler:       _ProductService_GetBooksByTitle_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "GetBooksByAuthor",
+			Handler:       _ProductService_GetBooksByAuthor_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "GetBooksByGenre",
+			Handler:       _ProductService_GetBooksByGenre_Handler,
 			ServerStreams: true,
 		},
 		{
