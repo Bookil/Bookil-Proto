@@ -883,8 +883,14 @@ type ModifyBookByIDRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	BookId uint32 `protobuf:"varint,1,opt,name=book_id,json=bookId,proto3" json:"book_id,omitempty"`
-	Book   *Book  `protobuf:"bytes,2,opt,name=book,proto3" json:"book,omitempty"`
+	BookId      uint32    `protobuf:"varint,1,opt,name=book_id,json=bookId,proto3" json:"book_id,omitempty"`
+	Title       string    `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Description string    `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	Price       float32   `protobuf:"fixed32,4,opt,name=price,proto3" json:"price,omitempty"`
+	Quantity    uint32    `protobuf:"varint,5,opt,name=quantity,proto3" json:"quantity,omitempty"`
+	Authors     []*Author `protobuf:"bytes,6,rep,name=authors,proto3" json:"authors,omitempty"`
+	Genre       []*Genre  `protobuf:"bytes,7,rep,name=genre,proto3" json:"genre,omitempty"`
+	Year        uint32    `protobuf:"varint,8,opt,name=year,proto3" json:"year,omitempty"`
 }
 
 func (x *ModifyBookByIDRequest) Reset() {
@@ -926,11 +932,53 @@ func (x *ModifyBookByIDRequest) GetBookId() uint32 {
 	return 0
 }
 
-func (x *ModifyBookByIDRequest) GetBook() *Book {
+func (x *ModifyBookByIDRequest) GetTitle() string {
 	if x != nil {
-		return x.Book
+		return x.Title
+	}
+	return ""
+}
+
+func (x *ModifyBookByIDRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *ModifyBookByIDRequest) GetPrice() float32 {
+	if x != nil {
+		return x.Price
+	}
+	return 0
+}
+
+func (x *ModifyBookByIDRequest) GetQuantity() uint32 {
+	if x != nil {
+		return x.Quantity
+	}
+	return 0
+}
+
+func (x *ModifyBookByIDRequest) GetAuthors() []*Author {
+	if x != nil {
+		return x.Authors
 	}
 	return nil
+}
+
+func (x *ModifyBookByIDRequest) GetGenre() []*Genre {
+	if x != nil {
+		return x.Genre
+	}
+	return nil
+}
+
+func (x *ModifyBookByIDRequest) GetYear() uint32 {
+	if x != nil {
+		return x.Year
+	}
+	return 0
 }
 
 type ModifyBookByIDResponse struct {
@@ -1629,12 +1677,23 @@ var file_product_v1_product_proto_rawDesc = []byte{
 	0x65, 0x73, 0x74, 0x12, 0x17, 0x0a, 0x07, 0x62, 0x6f, 0x6f, 0x6b, 0x5f, 0x69, 0x64, 0x18, 0x01,
 	0x20, 0x01, 0x28, 0x0d, 0x52, 0x06, 0x62, 0x6f, 0x6f, 0x6b, 0x49, 0x64, 0x22, 0x18, 0x0a, 0x16,
 	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x42, 0x6f, 0x6f, 0x6b, 0x42, 0x79, 0x49, 0x44, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x56, 0x0a, 0x15, 0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79,
-	0x42, 0x6f, 0x6f, 0x6b, 0x42, 0x79, 0x49, 0x44, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
-	0x17, 0x0a, 0x07, 0x62, 0x6f, 0x6f, 0x6b, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0d,
-	0x52, 0x06, 0x62, 0x6f, 0x6f, 0x6b, 0x49, 0x64, 0x12, 0x24, 0x0a, 0x04, 0x62, 0x6f, 0x6f, 0x6b,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x10, 0x2e, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74,
-	0x2e, 0x76, 0x31, 0x2e, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x04, 0x62, 0x6f, 0x6f, 0x6b, 0x22, 0x18,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x85, 0x02, 0x0a, 0x15, 0x4d, 0x6f, 0x64, 0x69, 0x66,
+	0x79, 0x42, 0x6f, 0x6f, 0x6b, 0x42, 0x79, 0x49, 0x44, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x12, 0x17, 0x0a, 0x07, 0x62, 0x6f, 0x6f, 0x6b, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x0d, 0x52, 0x06, 0x62, 0x6f, 0x6f, 0x6b, 0x49, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x69, 0x74,
+	0x6c, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x12,
+	0x20, 0x0a, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x03,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x64, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x69, 0x6f,
+	0x6e, 0x12, 0x14, 0x0a, 0x05, 0x70, 0x72, 0x69, 0x63, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x02,
+	0x52, 0x05, 0x70, 0x72, 0x69, 0x63, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x71, 0x75, 0x61, 0x6e, 0x74,
+	0x69, 0x74, 0x79, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x08, 0x71, 0x75, 0x61, 0x6e, 0x74,
+	0x69, 0x74, 0x79, 0x12, 0x2c, 0x0a, 0x07, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x73, 0x18, 0x06,
+	0x20, 0x03, 0x28, 0x0b, 0x32, 0x12, 0x2e, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x2e, 0x76,
+	0x31, 0x2e, 0x41, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x52, 0x07, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72,
+	0x73, 0x12, 0x27, 0x0a, 0x05, 0x67, 0x65, 0x6e, 0x72, 0x65, 0x18, 0x07, 0x20, 0x03, 0x28, 0x0b,
+	0x32, 0x11, 0x2e, 0x70, 0x72, 0x6f, 0x64, 0x75, 0x63, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65,
+	0x6e, 0x72, 0x65, 0x52, 0x05, 0x67, 0x65, 0x6e, 0x72, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x79, 0x65,
+	0x61, 0x72, 0x18, 0x08, 0x20, 0x01, 0x28, 0x0d, 0x52, 0x04, 0x79, 0x65, 0x61, 0x72, 0x22, 0x18,
 	0x0a, 0x16, 0x4d, 0x6f, 0x64, 0x69, 0x66, 0x79, 0x42, 0x6f, 0x6f, 0x6b, 0x42, 0x79, 0x49, 0x44,
 	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x25, 0x0a, 0x0f, 0x41, 0x64, 0x64, 0x47,
 	0x65, 0x6e, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x6e,
@@ -1837,45 +1896,46 @@ var file_product_v1_product_proto_depIdxs = []int32{
 	28, // 5: product.v1.GetBooksByTitleResponse.book:type_name -> product.v1.Book
 	28, // 6: product.v1.GetBooksByAuthorResponse.book:type_name -> product.v1.Book
 	28, // 7: product.v1.GetBooksByGenreResponse.book:type_name -> product.v1.Book
-	28, // 8: product.v1.ModifyBookByIDRequest.book:type_name -> product.v1.Book
-	30, // 9: product.v1.GetAllGenresResponse.genre:type_name -> product.v1.Genre
-	29, // 10: product.v1.Book.authors:type_name -> product.v1.Author
-	30, // 11: product.v1.Book.genre:type_name -> product.v1.Genre
-	31, // 12: product.v1.Book.created_at:type_name -> google.protobuf.Timestamp
-	31, // 13: product.v1.Book.updated_at:type_name -> google.protobuf.Timestamp
-	0,  // 14: product.v1.ProductService.AddAuthor:input_type -> product.v1.AddAuthorRequest
-	2,  // 15: product.v1.ProductService.GetAllAuthors:input_type -> product.v1.GetAllAuthorsRequest
-	4,  // 16: product.v1.ProductService.GetAllBooks:input_type -> product.v1.GetAllBooksRequest
-	6,  // 17: product.v1.ProductService.AddBook:input_type -> product.v1.AddBookRequest
-	8,  // 18: product.v1.ProductService.GetBookByID:input_type -> product.v1.GetBookByIDRequest
-	10, // 19: product.v1.ProductService.GetBooksByTitle:input_type -> product.v1.GetBooksByTitleRequest
-	12, // 20: product.v1.ProductService.GetBooksByAuthor:input_type -> product.v1.GetBooksByAuthorRequest
-	14, // 21: product.v1.ProductService.GetBooksByGenre:input_type -> product.v1.GetBooksByGenreRequest
-	18, // 22: product.v1.ProductService.ModifyBookByID:input_type -> product.v1.ModifyBookByIDRequest
-	16, // 23: product.v1.ProductService.DeleteBookByID:input_type -> product.v1.DeleteBookByIDRequest
-	20, // 24: product.v1.ProductService.AddGenre:input_type -> product.v1.AddGenreRequest
-	22, // 25: product.v1.ProductService.GetAllGenres:input_type -> product.v1.GetAllGenresRequest
-	24, // 26: product.v1.ProductService.AddBookToCart:input_type -> product.v1.AddBookToCartRequest
-	26, // 27: product.v1.ProductService.DeleteBookFromCartByID:input_type -> product.v1.DeleteBookFromCartByIDRequest
-	1,  // 28: product.v1.ProductService.AddAuthor:output_type -> product.v1.AddAuthorResponse
-	3,  // 29: product.v1.ProductService.GetAllAuthors:output_type -> product.v1.GetAllAuthorsResponse
-	5,  // 30: product.v1.ProductService.GetAllBooks:output_type -> product.v1.GetAllBooksResponse
-	7,  // 31: product.v1.ProductService.AddBook:output_type -> product.v1.AddBookResponse
-	9,  // 32: product.v1.ProductService.GetBookByID:output_type -> product.v1.GetBookByIDResponse
-	11, // 33: product.v1.ProductService.GetBooksByTitle:output_type -> product.v1.GetBooksByTitleResponse
-	13, // 34: product.v1.ProductService.GetBooksByAuthor:output_type -> product.v1.GetBooksByAuthorResponse
-	15, // 35: product.v1.ProductService.GetBooksByGenre:output_type -> product.v1.GetBooksByGenreResponse
-	19, // 36: product.v1.ProductService.ModifyBookByID:output_type -> product.v1.ModifyBookByIDResponse
-	17, // 37: product.v1.ProductService.DeleteBookByID:output_type -> product.v1.DeleteBookByIDResponse
-	21, // 38: product.v1.ProductService.AddGenre:output_type -> product.v1.AddGenreResponse
-	23, // 39: product.v1.ProductService.GetAllGenres:output_type -> product.v1.GetAllGenresResponse
-	25, // 40: product.v1.ProductService.AddBookToCart:output_type -> product.v1.AddBookToCartResponse
-	27, // 41: product.v1.ProductService.DeleteBookFromCartByID:output_type -> product.v1.DeleteBookFromCartByIDResponse
-	28, // [28:42] is the sub-list for method output_type
-	14, // [14:28] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	29, // 8: product.v1.ModifyBookByIDRequest.authors:type_name -> product.v1.Author
+	30, // 9: product.v1.ModifyBookByIDRequest.genre:type_name -> product.v1.Genre
+	30, // 10: product.v1.GetAllGenresResponse.genre:type_name -> product.v1.Genre
+	29, // 11: product.v1.Book.authors:type_name -> product.v1.Author
+	30, // 12: product.v1.Book.genre:type_name -> product.v1.Genre
+	31, // 13: product.v1.Book.created_at:type_name -> google.protobuf.Timestamp
+	31, // 14: product.v1.Book.updated_at:type_name -> google.protobuf.Timestamp
+	0,  // 15: product.v1.ProductService.AddAuthor:input_type -> product.v1.AddAuthorRequest
+	2,  // 16: product.v1.ProductService.GetAllAuthors:input_type -> product.v1.GetAllAuthorsRequest
+	4,  // 17: product.v1.ProductService.GetAllBooks:input_type -> product.v1.GetAllBooksRequest
+	6,  // 18: product.v1.ProductService.AddBook:input_type -> product.v1.AddBookRequest
+	8,  // 19: product.v1.ProductService.GetBookByID:input_type -> product.v1.GetBookByIDRequest
+	10, // 20: product.v1.ProductService.GetBooksByTitle:input_type -> product.v1.GetBooksByTitleRequest
+	12, // 21: product.v1.ProductService.GetBooksByAuthor:input_type -> product.v1.GetBooksByAuthorRequest
+	14, // 22: product.v1.ProductService.GetBooksByGenre:input_type -> product.v1.GetBooksByGenreRequest
+	18, // 23: product.v1.ProductService.ModifyBookByID:input_type -> product.v1.ModifyBookByIDRequest
+	16, // 24: product.v1.ProductService.DeleteBookByID:input_type -> product.v1.DeleteBookByIDRequest
+	20, // 25: product.v1.ProductService.AddGenre:input_type -> product.v1.AddGenreRequest
+	22, // 26: product.v1.ProductService.GetAllGenres:input_type -> product.v1.GetAllGenresRequest
+	24, // 27: product.v1.ProductService.AddBookToCart:input_type -> product.v1.AddBookToCartRequest
+	26, // 28: product.v1.ProductService.DeleteBookFromCartByID:input_type -> product.v1.DeleteBookFromCartByIDRequest
+	1,  // 29: product.v1.ProductService.AddAuthor:output_type -> product.v1.AddAuthorResponse
+	3,  // 30: product.v1.ProductService.GetAllAuthors:output_type -> product.v1.GetAllAuthorsResponse
+	5,  // 31: product.v1.ProductService.GetAllBooks:output_type -> product.v1.GetAllBooksResponse
+	7,  // 32: product.v1.ProductService.AddBook:output_type -> product.v1.AddBookResponse
+	9,  // 33: product.v1.ProductService.GetBookByID:output_type -> product.v1.GetBookByIDResponse
+	11, // 34: product.v1.ProductService.GetBooksByTitle:output_type -> product.v1.GetBooksByTitleResponse
+	13, // 35: product.v1.ProductService.GetBooksByAuthor:output_type -> product.v1.GetBooksByAuthorResponse
+	15, // 36: product.v1.ProductService.GetBooksByGenre:output_type -> product.v1.GetBooksByGenreResponse
+	19, // 37: product.v1.ProductService.ModifyBookByID:output_type -> product.v1.ModifyBookByIDResponse
+	17, // 38: product.v1.ProductService.DeleteBookByID:output_type -> product.v1.DeleteBookByIDResponse
+	21, // 39: product.v1.ProductService.AddGenre:output_type -> product.v1.AddGenreResponse
+	23, // 40: product.v1.ProductService.GetAllGenres:output_type -> product.v1.GetAllGenresResponse
+	25, // 41: product.v1.ProductService.AddBookToCart:output_type -> product.v1.AddBookToCartResponse
+	27, // 42: product.v1.ProductService.DeleteBookFromCartByID:output_type -> product.v1.DeleteBookFromCartByIDResponse
+	29, // [29:43] is the sub-list for method output_type
+	15, // [15:29] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_product_v1_product_proto_init() }
