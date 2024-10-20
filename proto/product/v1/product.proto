@@ -8,6 +8,7 @@ option go_package = "github.com/Bookil/microservices/product";
 
 service ProductService {
   rpc AddAuthor(AddAuthorRequest) returns (AddAuthorResponse) {}
+  rpc DeleteAuthorByID(DeleteAuthorByIDRequest) returns (DeleteAuthorByIDResponse) {}
   rpc GetAllAuthors(GetAllAuthorsRequest) returns (stream GetAllAuthorsResponse) {}
   rpc GetAllBooks(GetAllBooksRequest) returns (stream GetAllBooksResponse) {}
   rpc AddBook(AddBookRequest) returns (AddBookResponse) {}
@@ -18,6 +19,7 @@ service ProductService {
   rpc ModifyBookByID(ModifyBookByIDRequest) returns (ModifyBookByIDResponse) {}
   rpc DeleteBookByID(DeleteBookByIDRequest) returns (DeleteBookByIDResponse) {}
   rpc AddGenre(AddGenreRequest) returns (AddGenreResponse) {}
+  rpc DeleteGenreByID(DeleteGenreByIDRequest) returns (DeleteGenreByIDResponse) {}
   rpc GetAllGenres(GetAllGenresRequest) returns (stream GetAllGenresResponse) {}
   rpc AddBookToCart(AddBookToCartRequest) returns (AddBookToCartResponse) {}
   rpc DeleteBookFromCartByID(DeleteBookFromCartByIDRequest) returns (DeleteBookFromCartByIDResponse) {}
@@ -27,6 +29,12 @@ message AddAuthorRequest {
   string name = 1;
   string about = 2;
 }
+
+message DeleteAuthorByIDRequest {
+  uint32 id = 1;
+}
+
+message DeleteAuthorByIDResponse {}
 
 message AddAuthorResponse {}
 
@@ -110,6 +118,12 @@ message AddGenreRequest {
 }
 
 message AddGenreResponse {}
+
+message DeleteGenreByIDRequest {
+  uint32 id = 1;
+}
+
+message DeleteGenreByIDResponse {}
 
 message GetAllGenresRequest {}
 

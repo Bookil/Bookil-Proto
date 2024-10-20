@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	ProductService_AddAuthor_FullMethodName              = "/product.v1.ProductService/AddAuthor"
+	ProductService_DeleteAuthorByID_FullMethodName       = "/product.v1.ProductService/DeleteAuthorByID"
 	ProductService_GetAllAuthors_FullMethodName          = "/product.v1.ProductService/GetAllAuthors"
 	ProductService_GetAllBooks_FullMethodName            = "/product.v1.ProductService/GetAllBooks"
 	ProductService_AddBook_FullMethodName                = "/product.v1.ProductService/AddBook"
@@ -30,6 +31,7 @@ const (
 	ProductService_ModifyBookByID_FullMethodName         = "/product.v1.ProductService/ModifyBookByID"
 	ProductService_DeleteBookByID_FullMethodName         = "/product.v1.ProductService/DeleteBookByID"
 	ProductService_AddGenre_FullMethodName               = "/product.v1.ProductService/AddGenre"
+	ProductService_DeleteGenreByID_FullMethodName        = "/product.v1.ProductService/DeleteGenreByID"
 	ProductService_GetAllGenres_FullMethodName           = "/product.v1.ProductService/GetAllGenres"
 	ProductService_AddBookToCart_FullMethodName          = "/product.v1.ProductService/AddBookToCart"
 	ProductService_DeleteBookFromCartByID_FullMethodName = "/product.v1.ProductService/DeleteBookFromCartByID"
@@ -40,6 +42,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProductServiceClient interface {
 	AddAuthor(ctx context.Context, in *AddAuthorRequest, opts ...grpc.CallOption) (*AddAuthorResponse, error)
+	DeleteAuthorByID(ctx context.Context, in *DeleteAuthorByIDRequest, opts ...grpc.CallOption) (*DeleteAuthorByIDResponse, error)
 	GetAllAuthors(ctx context.Context, in *GetAllAuthorsRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetAllAuthorsResponse], error)
 	GetAllBooks(ctx context.Context, in *GetAllBooksRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetAllBooksResponse], error)
 	AddBook(ctx context.Context, in *AddBookRequest, opts ...grpc.CallOption) (*AddBookResponse, error)
@@ -50,6 +53,7 @@ type ProductServiceClient interface {
 	ModifyBookByID(ctx context.Context, in *ModifyBookByIDRequest, opts ...grpc.CallOption) (*ModifyBookByIDResponse, error)
 	DeleteBookByID(ctx context.Context, in *DeleteBookByIDRequest, opts ...grpc.CallOption) (*DeleteBookByIDResponse, error)
 	AddGenre(ctx context.Context, in *AddGenreRequest, opts ...grpc.CallOption) (*AddGenreResponse, error)
+	DeleteGenreByID(ctx context.Context, in *DeleteGenreByIDRequest, opts ...grpc.CallOption) (*DeleteGenreByIDResponse, error)
 	GetAllGenres(ctx context.Context, in *GetAllGenresRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetAllGenresResponse], error)
 	AddBookToCart(ctx context.Context, in *AddBookToCartRequest, opts ...grpc.CallOption) (*AddBookToCartResponse, error)
 	DeleteBookFromCartByID(ctx context.Context, in *DeleteBookFromCartByIDRequest, opts ...grpc.CallOption) (*DeleteBookFromCartByIDResponse, error)
@@ -67,6 +71,16 @@ func (c *productServiceClient) AddAuthor(ctx context.Context, in *AddAuthorReque
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(AddAuthorResponse)
 	err := c.cc.Invoke(ctx, ProductService_AddAuthor_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productServiceClient) DeleteAuthorByID(ctx context.Context, in *DeleteAuthorByIDRequest, opts ...grpc.CallOption) (*DeleteAuthorByIDResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteAuthorByIDResponse)
+	err := c.cc.Invoke(ctx, ProductService_DeleteAuthorByID_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -218,6 +232,16 @@ func (c *productServiceClient) AddGenre(ctx context.Context, in *AddGenreRequest
 	return out, nil
 }
 
+func (c *productServiceClient) DeleteGenreByID(ctx context.Context, in *DeleteGenreByIDRequest, opts ...grpc.CallOption) (*DeleteGenreByIDResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteGenreByIDResponse)
+	err := c.cc.Invoke(ctx, ProductService_DeleteGenreByID_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *productServiceClient) GetAllGenres(ctx context.Context, in *GetAllGenresRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[GetAllGenresResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	stream, err := c.cc.NewStream(ctx, &ProductService_ServiceDesc.Streams[5], ProductService_GetAllGenres_FullMethodName, cOpts...)
@@ -262,6 +286,7 @@ func (c *productServiceClient) DeleteBookFromCartByID(ctx context.Context, in *D
 // for forward compatibility.
 type ProductServiceServer interface {
 	AddAuthor(context.Context, *AddAuthorRequest) (*AddAuthorResponse, error)
+	DeleteAuthorByID(context.Context, *DeleteAuthorByIDRequest) (*DeleteAuthorByIDResponse, error)
 	GetAllAuthors(*GetAllAuthorsRequest, grpc.ServerStreamingServer[GetAllAuthorsResponse]) error
 	GetAllBooks(*GetAllBooksRequest, grpc.ServerStreamingServer[GetAllBooksResponse]) error
 	AddBook(context.Context, *AddBookRequest) (*AddBookResponse, error)
@@ -272,6 +297,7 @@ type ProductServiceServer interface {
 	ModifyBookByID(context.Context, *ModifyBookByIDRequest) (*ModifyBookByIDResponse, error)
 	DeleteBookByID(context.Context, *DeleteBookByIDRequest) (*DeleteBookByIDResponse, error)
 	AddGenre(context.Context, *AddGenreRequest) (*AddGenreResponse, error)
+	DeleteGenreByID(context.Context, *DeleteGenreByIDRequest) (*DeleteGenreByIDResponse, error)
 	GetAllGenres(*GetAllGenresRequest, grpc.ServerStreamingServer[GetAllGenresResponse]) error
 	AddBookToCart(context.Context, *AddBookToCartRequest) (*AddBookToCartResponse, error)
 	DeleteBookFromCartByID(context.Context, *DeleteBookFromCartByIDRequest) (*DeleteBookFromCartByIDResponse, error)
@@ -287,6 +313,9 @@ type UnimplementedProductServiceServer struct{}
 
 func (UnimplementedProductServiceServer) AddAuthor(context.Context, *AddAuthorRequest) (*AddAuthorResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddAuthor not implemented")
+}
+func (UnimplementedProductServiceServer) DeleteAuthorByID(context.Context, *DeleteAuthorByIDRequest) (*DeleteAuthorByIDResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteAuthorByID not implemented")
 }
 func (UnimplementedProductServiceServer) GetAllAuthors(*GetAllAuthorsRequest, grpc.ServerStreamingServer[GetAllAuthorsResponse]) error {
 	return status.Errorf(codes.Unimplemented, "method GetAllAuthors not implemented")
@@ -317,6 +346,9 @@ func (UnimplementedProductServiceServer) DeleteBookByID(context.Context, *Delete
 }
 func (UnimplementedProductServiceServer) AddGenre(context.Context, *AddGenreRequest) (*AddGenreResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddGenre not implemented")
+}
+func (UnimplementedProductServiceServer) DeleteGenreByID(context.Context, *DeleteGenreByIDRequest) (*DeleteGenreByIDResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteGenreByID not implemented")
 }
 func (UnimplementedProductServiceServer) GetAllGenres(*GetAllGenresRequest, grpc.ServerStreamingServer[GetAllGenresResponse]) error {
 	return status.Errorf(codes.Unimplemented, "method GetAllGenres not implemented")
@@ -362,6 +394,24 @@ func _ProductService_AddAuthor_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ProductServiceServer).AddAuthor(ctx, req.(*AddAuthorRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProductService_DeleteAuthorByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteAuthorByIDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServiceServer).DeleteAuthorByID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProductService_DeleteAuthorByID_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServiceServer).DeleteAuthorByID(ctx, req.(*DeleteAuthorByIDRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -511,6 +561,24 @@ func _ProductService_AddGenre_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProductService_DeleteGenreByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteGenreByIDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServiceServer).DeleteGenreByID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProductService_DeleteGenreByID_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServiceServer).DeleteGenreByID(ctx, req.(*DeleteGenreByIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ProductService_GetAllGenres_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(GetAllGenresRequest)
 	if err := stream.RecvMsg(m); err != nil {
@@ -570,6 +638,10 @@ var ProductService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ProductService_AddAuthor_Handler,
 		},
 		{
+			MethodName: "DeleteAuthorByID",
+			Handler:    _ProductService_DeleteAuthorByID_Handler,
+		},
+		{
 			MethodName: "AddBook",
 			Handler:    _ProductService_AddBook_Handler,
 		},
@@ -588,6 +660,10 @@ var ProductService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddGenre",
 			Handler:    _ProductService_AddGenre_Handler,
+		},
+		{
+			MethodName: "DeleteGenreByID",
+			Handler:    _ProductService_DeleteGenreByID_Handler,
 		},
 		{
 			MethodName: "AddBookToCart",
