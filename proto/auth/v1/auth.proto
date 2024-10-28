@@ -8,6 +8,7 @@ service AuthService {
   rpc Register(RegisterRequest) returns (RegisterResponse) {}
   rpc SendVerificationCodeAgain(SendVerificationCodeAgainRequest) returns (SendVerificationCodeAgainResponse) {}
   rpc Authentication(AuthenticationRequest) returns (AuthenticationResponse) {}
+  rpc RoleAuthorization(RoleAuthorizationRequest) returns (RoleAuthorizationResponse) {}
   rpc VerifyEmail(VerifyEmailRequest) returns (VerifyEmailResponse) {}
   rpc Login(LoginRequest) returns (LoginResponse) {}
   rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse) {}
@@ -35,6 +36,12 @@ message AuthenticationRequest {
 message AuthenticationResponse {
   string user_id = 1;
 }
+
+message RoleAuthorizationRequest {
+  string access_token = 1;
+}
+
+message RoleAuthorizationResponse {}
 
 message SendVerificationCodeAgainRequest {
   string email = 1;

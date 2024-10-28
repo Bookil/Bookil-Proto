@@ -22,6 +22,7 @@ const (
 	AuthService_Register_FullMethodName                  = "/auth.v1.AuthService/Register"
 	AuthService_SendVerificationCodeAgain_FullMethodName = "/auth.v1.AuthService/SendVerificationCodeAgain"
 	AuthService_Authentication_FullMethodName            = "/auth.v1.AuthService/Authentication"
+	AuthService_RoleAuthorization_FullMethodName         = "/auth.v1.AuthService/RoleAuthorization"
 	AuthService_VerifyEmail_FullMethodName               = "/auth.v1.AuthService/VerifyEmail"
 	AuthService_Login_FullMethodName                     = "/auth.v1.AuthService/Login"
 	AuthService_ChangePassword_FullMethodName            = "/auth.v1.AuthService/ChangePassword"
@@ -38,6 +39,7 @@ type AuthServiceClient interface {
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
 	SendVerificationCodeAgain(ctx context.Context, in *SendVerificationCodeAgainRequest, opts ...grpc.CallOption) (*SendVerificationCodeAgainResponse, error)
 	Authentication(ctx context.Context, in *AuthenticationRequest, opts ...grpc.CallOption) (*AuthenticationResponse, error)
+	RoleAuthorization(ctx context.Context, in *RoleAuthorizationRequest, opts ...grpc.CallOption) (*RoleAuthorizationResponse, error)
 	VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...grpc.CallOption) (*VerifyEmailResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	ChangePassword(ctx context.Context, in *ChangePasswordRequest, opts ...grpc.CallOption) (*ChangePasswordResponse, error)
@@ -79,6 +81,16 @@ func (c *authServiceClient) Authentication(ctx context.Context, in *Authenticati
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(AuthenticationResponse)
 	err := c.cc.Invoke(ctx, AuthService_Authentication_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) RoleAuthorization(ctx context.Context, in *RoleAuthorizationRequest, opts ...grpc.CallOption) (*RoleAuthorizationResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RoleAuthorizationResponse)
+	err := c.cc.Invoke(ctx, AuthService_RoleAuthorization_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -162,6 +174,7 @@ type AuthServiceServer interface {
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
 	SendVerificationCodeAgain(context.Context, *SendVerificationCodeAgainRequest) (*SendVerificationCodeAgainResponse, error)
 	Authentication(context.Context, *AuthenticationRequest) (*AuthenticationResponse, error)
+	RoleAuthorization(context.Context, *RoleAuthorizationRequest) (*RoleAuthorizationResponse, error)
 	VerifyEmail(context.Context, *VerifyEmailRequest) (*VerifyEmailResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	ChangePassword(context.Context, *ChangePasswordRequest) (*ChangePasswordResponse, error)
@@ -187,6 +200,9 @@ func (UnimplementedAuthServiceServer) SendVerificationCodeAgain(context.Context,
 }
 func (UnimplementedAuthServiceServer) Authentication(context.Context, *AuthenticationRequest) (*AuthenticationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Authentication not implemented")
+}
+func (UnimplementedAuthServiceServer) RoleAuthorization(context.Context, *RoleAuthorizationRequest) (*RoleAuthorizationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RoleAuthorization not implemented")
 }
 func (UnimplementedAuthServiceServer) VerifyEmail(context.Context, *VerifyEmailRequest) (*VerifyEmailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyEmail not implemented")
@@ -280,6 +296,24 @@ func _AuthService_Authentication_Handler(srv interface{}, ctx context.Context, d
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AuthServiceServer).Authentication(ctx, req.(*AuthenticationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_RoleAuthorization_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RoleAuthorizationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).RoleAuthorization(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthService_RoleAuthorization_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).RoleAuthorization(ctx, req.(*RoleAuthorizationRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -428,6 +462,10 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Authentication",
 			Handler:    _AuthService_Authentication_Handler,
+		},
+		{
+			MethodName: "RoleAuthorization",
+			Handler:    _AuthService_RoleAuthorization_Handler,
 		},
 		{
 			MethodName: "VerifyEmail",
